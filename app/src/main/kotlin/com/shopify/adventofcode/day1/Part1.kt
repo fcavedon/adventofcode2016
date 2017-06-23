@@ -6,11 +6,11 @@ package com.shopify.adventofcode.day1
 fun main(args: Array<String>) {
     var coord = CardinalPoint()
 
-    for (cmd in input.replace(" ", "").split(',')) {
+    for (cmd in input.split(", ")) {
         coord = coord.move(cmd)
     }
 
-    println(coord)
+    println(coord.dist())
 }
 
 enum class Directions {
@@ -31,26 +31,32 @@ enum class Directions {
     }
 }
 
+val visited = HashMap<String, Int>()
+
 data class CardinalPoint(var x: Int = 0, var y: Int = 0, var dir: Directions = Directions.N) {
 
     fun move(cmd: String): CardinalPoint {
         dir = dir.rotate(cmd[0])
         val amt = cmd.subSequence(1, cmd.length).toString().toInt()
 
-        when (dir) {
-            Directions.N -> {
-                y += amt
+        (1..amt).forEach {
+            when (dir) {
+                Directions.N -> y++
+                Directions.S -> y--
+                Directions.E -> x++
+                Directions.W -> x--
             }
-            Directions.S -> {
-                y -= amt
-            }
-            Directions.E -> {
-                x += amt
-            }
-            Directions.W -> {
-                x -= amt
+            val newPos: String = "$x,$y"
+
+            // Part2
+            if (visited[newPos] != null) {
+                println("$newPos is visited again, distance is ${dist()}")
+
+            } else {
+                visited[newPos] = 1
             }
         }
+
         return this
     }
 
