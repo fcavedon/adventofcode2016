@@ -42,6 +42,7 @@ data class CardinalPoint(var x: Int = 0, var y: Int = 0, var dir: Directions = D
         dir = dir.rotate(cmd[0])
         val amt = cmd.subSequence(1, cmd.length).toString().toInt()
 
+        // Thanks @efung for this strategy!
         (1..amt).forEach {
             when (dir) {
                 Directions.N -> y++
