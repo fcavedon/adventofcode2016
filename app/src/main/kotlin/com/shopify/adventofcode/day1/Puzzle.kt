@@ -9,8 +9,11 @@ fun main(args: Array<String>) {
     for (cmd in input.split(", ")) {
         coord = coord.move(cmd)
     }
-
+    //Part1
     println(coord.dist())
+
+    //Part2
+    println(visited.groupingBy { it }.eachCount().filter { it.value == 2 }.toList().first())
 }
 
 enum class Directions {
@@ -31,7 +34,7 @@ enum class Directions {
     }
 }
 
-val visited = HashMap<String, Int>()
+val visited = ArrayList<String>()
 
 data class CardinalPoint(var x: Int = 0, var y: Int = 0, var dir: Directions = Directions.N) {
 
@@ -46,15 +49,7 @@ data class CardinalPoint(var x: Int = 0, var y: Int = 0, var dir: Directions = D
                 Directions.E -> x++
                 Directions.W -> x--
             }
-            val newPos: String = "$x,$y"
-
-            // Part2
-            if (visited[newPos] != null) {
-                println("$newPos is visited again, distance is ${dist()}")
-
-            } else {
-                visited[newPos] = 1
-            }
+            visited.add("$x,$y")
         }
 
         return this
