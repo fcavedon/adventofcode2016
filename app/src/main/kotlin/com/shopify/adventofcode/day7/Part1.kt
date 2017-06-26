@@ -10,19 +10,18 @@ fun main(args: Array<String>) {
     println(input.count { line ->
         val split = line.split("[", "]")
 
-        val (supernet, hypernet) = split.map { Pair(split.indexOf(it), it) }.partition { it.first.isEven() }
+        val (supernet, hypernet) = split.mapIndexed { index, s -> Pair(index, s) }.partition { it.first.isEven() }
 
         val validSupernet = supernet.map { isAbba(it.second) }.any { it }
-        val validHypernet = hypernet.map { !isAbba(it.second) }.any { it }
+        val validHypernet = hypernet.map { isAbba(it.second) }.none { it }
 
         validHypernet && validSupernet
     })
-
 }
 
 fun isAbba(input: String): Boolean {
     with(input) {
-        return (4 until length).withIndex()
+        return (4 until length + 1).withIndex()
                 .map { substring(it.index, it.value).isPalindrome() }
                 .any { it }
     }
